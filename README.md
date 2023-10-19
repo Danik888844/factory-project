@@ -15,7 +15,7 @@ yarn serve or npm run serve
 yarn build
 ```
 
-### Doesn't forget to start json-server
+### Don't forget to start json-server
 ```
 npx json-server --watch data/db.json
 ```
