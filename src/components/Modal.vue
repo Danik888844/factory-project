@@ -1,18 +1,38 @@
 <template>
   <div class="backdrop" @click.self="closeModal">
     <div class="modal">
-        <h2>Добавить фабрику в cookie</h2>
-        <div>
-            <span>Город: </span>
-            <input type="text" />
-        </div>
+        <h2>Добавление фабрики в cookie</h2>
+        <form>
+            <label>Город: </label>
+            <select required>
+                <option v-for="city in cities" :key="city.ID" :value="city.ID">{{ city.CityName }}</option>
+            </select>
+            <label>Цех: </label>
+            <select required>
+                <option v-for="city in cities" :key="city.ID" :value="city.ID">{{ city.CityName }}</option>
+            </select>
+            <label>Работник: </label>
+            <select required>
+                <option v-for="city in cities" :key="city.ID" :value="city.ID">{{ city.CityName }}</option>
+            </select>
+            <label>Бригада: </label>
+            <select required>
+                <option v-for="city in cities" :key="city.ID" :value="city.ID">{{ city.CityName }}</option>
+            </select>
+            <label>Смена: </label>
+            <select required>
+                <option v-for="city in cities" :key="city.ID" :value="city.ID">{{ city.CityName }}</option>
+            </select>
+
+            <input type="submit" style="margin-top: 25px;" />
+        </form>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-    props: [],
+    props: ['cities'],
     methods: {
         closeModal(){
             this.$emit('close')
@@ -23,11 +43,13 @@ export default {
 
 <style>
     .modal {
-        width: 600px;
+        max-width: 600px;
+        max-height: 500px;
         padding: 20px;
         margin: 100px auto;
         background: white;
         border-radius: 5px;
+        overflow: auto;
     }
     .backdrop {
         top: 0;
