@@ -5,7 +5,7 @@
   </div>
   <Content />
   <div v-if="openModal">
-    <Modal @close="toggleModal" />
+    <Modal :cities="cities" @close="toggleModal" />
   </div>
 </template>
 
@@ -18,8 +18,15 @@ export default {
   components: {Modal, Content},
   data(){
     return{
-      openModal: false
+      openModal: false,
+      cities: []
     }
+  },
+  mounted(){
+    fetch('http://localhost:3000/cities')
+    .then((res)=>res.json())
+    .then(data => this.cities = data)
+    .catch(err => console.log(err.message))
   },
   methods: {
     toggleModal(){
