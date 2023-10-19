@@ -3,15 +3,16 @@
       <h1 style="flex: 1; text-align: center;">Просмотр данных с cookie</h1>
       <button style="margin-right: 20px;" @click="toggleModal">Добавить фабрику</button>
   </div>
-  <Content />
+  <Content :factories="factories" />
   <div v-if="openModal">
-    <Modal :cities="cities" @close="toggleModal" />
+    <Modal :cities="cities" :brigades="brigades" :shifts="shifts" :factories="factories" @close="toggleModal" />
   </div>
 </template>
 
 <script>
 import Modal from './components/Modal.vue'
 import Content from './components/Content.vue'
+import VueCookies from "vue-cookie";
 
 export default {
   name: 'App',
@@ -19,13 +20,33 @@ export default {
   data(){
     return{
       openModal: false,
-      cities: []
+      cities: [],
+      brigades: [],
+      shifts: [],
+      factories: []
+    }
+  },
+  created(){
+    const savedData = VueCookies.get("savedData");
+
+    if (savedData) {
+      this.factories = JSON.parse(savedData);
     }
   },
   mounted(){
     fetch('http://localhost:3000/cities')
     .then((res)=>res.json())
     .then(data => this.cities = data)
+    .catch(err => console.log(err.message))
+
+    fetch('http://localhost:3000/brigades')
+    .then((res)=>res.json())
+    .then(data => this.brigades = data)
+    .catch(err => console.log(err.message))
+
+    fetch('http://localhost:3000/shifts')
+    .then((res)=>res.json())
+    .then(data => this.shifts = data)
     .catch(err => console.log(err.message))
   },
   methods: {
