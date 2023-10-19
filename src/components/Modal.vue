@@ -12,40 +12,58 @@
                 <option v-for="gild in gilds" :key="gild.id" :value="gild">{{ gild.GildName }}</option>
             </select>
             <label>Работник: </label>
-            <select>
-                <option v-for="employee in employees" :key="employee.id" :value="employee.id">{{ employee.FullName }}</option>
+            <select v-model="employee">
+                <option v-for="employee in employees" :key="employee.id" :value="employee">{{ employee.FullName }}</option>
             </select>
             <label>Бригада: </label>
-            <select required>
-                <option v-for="brigade in birages" :key="brigade.id" :value="brigade.id">{{ brigade.BrigadeName }}</option>
+            <select v-model="brigade">
+                <option v-for="brigade in brigades" :key="brigade.id" :value="brigade">{{ brigade.BrigadeName }}</option>
             </select>
             <label>Смена: </label>
-            <select required>
-                <option v-for="shift in shifts" :key="shift.id" :value="shift.id">{{ shift.ShiftName }}</option>
+            <select v-model="shift">
+                <option v-for="shift in shifts" :key="shift.id" :value="shift">{{ shift.ShiftName }}</option>
             </select>
 
-            <input type="submit" style="margin-top: 25px;" />
+            <button style="margin-top: 25px;width: 100%;" @click="saveData">Сохранить в Cookie</button>
         </form>
     </div>
   </div>
 </template>
 
 <script>
+import VueCookies from "vue-cookie";
+
 export default {
     data(){
         return{
             city: null,
             gild: null,
+            employee: null,
+            brigade: null,
+            shift: null,
             gilds: [],
-            employees: [],
-            brigades: [],
-            shifts: []
+            employees: []
         }
     },
-    props: ['cities'],
+    props: ['cities','brigades','shifts','factories'],
     methods: {
         closeModal(){
             this.$emit('close')
+        },
+        saveData() {
+            const newFactory = {
+                CityName: this.city.CityName,
+                GildName: this.gild.GildName,
+                FullName: this.employee.FullName,
+                BrigadeName: this.brigade.BrigadeName,
+                ShiftName: this.shift.ShiftName
+            };
+
+            this.factories.push(newFactory);
+            VueCookies.set("savedData", JSON.stringify(this.factories), 1);
+
+            this.gilds = []
+            this.employees = []
         },
         getGilds(){
             if(!this.city)
